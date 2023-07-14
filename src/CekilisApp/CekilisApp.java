@@ -43,10 +43,13 @@ public class CekilisApp extends JFrame {
 	
 	private JTextField winnum;
 
-	/**
-	 * Launch the application.
-	 */
+	
 	public void cekilisyap() {
+		String winnumText = winnum.getText().trim();
+		try {
+		int winnerCount = Integer.parseInt(winnum.getText());
+		
+		if(winnerCount > 0 ) {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filepath),"ISO-8859-9"))){
 			String kisi;
 			while((kisi =reader.readLine()) != null) {
@@ -63,11 +66,23 @@ public class CekilisApp extends JFrame {
 			e.printStackTrace();
 		}
 		
-		while(winners.size() != Integer.parseInt(winnum.getText())) {
+		while(winners.size() != winnerCount) {
+			
+				
+			
 			Random random = new Random();
 			int kazananindex= random.nextInt(katilanlar.size());
 			winners.add(katilanlar.get(kazananindex));
-		}
+		
+	}
+    }else if (winnumText.isEmpty()){
+    	JOptionPane.showMessageDialog(null, "Lütfen kazanan sayısı giriniz.");
+    }
+		else {
+    	JOptionPane.showMessageDialog(null, "Kazanan kısmına pozitif bir tam sayı giriniz.");
+    }}catch (NumberFormatException ex) {
+        JOptionPane.showMessageDialog(null, "Geçersiz bir kazanan sayısı girdiniz. Lütfen pozitif bir tam sayı giriniz.");
+    }
 		
 	}
 	public static void main(String[] args) {
@@ -161,8 +176,8 @@ public class CekilisApp extends JFrame {
 		
 		JLabel lblNewLabel = new JLabel("Kazananlar");
 		lblNewLabel.setForeground(new Color(0, 0, 0));
-		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-		lblNewLabel.setBounds(10, 69, 109, 14);
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 15));
+		lblNewLabel.setBounds(10, 78, 109, 14);
 		contentPane.add(lblNewLabel);
 		WinnerList.setModel(model);
 		
@@ -201,5 +216,12 @@ public class CekilisApp extends JFrame {
 		againbtn.setBackground(UIManager.getColor("Button.darkShadow"));
 		againbtn.setBounds(319, 212, 105, 23);
 		contentPane.add(againbtn);
+		
+		JTextArea txtformat = new JTextArea();
+		txtformat.setBackground(SystemColor.activeCaption);
+		txtformat.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtformat.setText("Lütfen çekilişini yapmak istediğiniz nesnelerin \r\niçinde yazılı olduğu bir .txt dosyası seçiniz.");
+		txtformat.setBounds(10, 36, 283, 31);
+		contentPane.add(txtformat);
 	}
 }
